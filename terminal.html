@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/jquery.terminal.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/jquery.terminal/css/jquery.terminal.min.css"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      .console {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        top: 45px;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(0, 0, 0);
+        color: rgb(93, 246, 4);
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body style="height: 100%">
+    <div id="console" name="console" class="console"></div>
+  </body>
+
+  <script>
+    //var __EVAL = (s) => eval(`void (__EVAL = ${__EVAL}); ${s}`);
+
+    var result = "";
+
+    $("#console").terminal(
+      function (command) {
+        if (command !== "") {
+          try {
+            //var result = __EVAL(command);
+            this.echo("You Sent: " + new String(command));
+            result = getchatgptai(command);
+            this.echo(new String(result));
+          } catch (e) {
+            this.error(new String(e));
+          }
+        } else {
+          this.echo("");
+        }
+      },
+      {
+        greetings: "ChatGPT Discussion Area",
+        name: "js_demo",
+        prompt: "Question >>> ",
+      }
+    );
+
+    function getchatgptai(chatquestion) {
+      var strreturn = "";
+
+      //var chatquestion = document.getElementById("prompt").value;
+      //var apikey = document.getElementByID("api_key").value;
+
+      $.ajax({
+        type: "GET",
+        url: "chatgptaiv3.php",
+        dataType: "text",
+        async: false,
+        data: {
+          prompt: chatquestion,
+          type: "getchatgpt",
+        },
+        success: function (data) {
+          console.log(data);
+
+          if (data == "") {
+            strreturn = "I am sorry... I do not know how to answer that.";
+          } else {
+            strreturn = data;
+          }
+        },
+      });
+
+      return strreturn;
+    }
+  </script>
+  <div
+    id="idf9c7a3715fba6"
+    a='{"t":"g7bs","v":"1.2","lang":"en","locs":[],"ssot":"f","sics":"ds","cbkg":"#1976D2","cfnt":"#FFFFFF","cend":"#FFFFFF00"}'
+  >
+    <a href="https://sharpweather.com/widgets/">Weather Widget for Website</a>
+    by sharpweather.com
+  </div>
+  <script
+    async
+    src="https://static1.sharpweather.com/widgetjs/?id=idf9c7a3715fba6"
+  ></script>
+</html>
